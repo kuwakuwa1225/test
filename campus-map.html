@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>まにあ～る - 大学情報</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background-color: #f4f7f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #003366;
+      color: #fff;
+      padding: 20px 40px;
+    }
+
+    header h1 {
+      font-size: 24px;
+    }
+
+    nav {
+      background-color: #00509e;
+      padding: 10px 40px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      padding: 40px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    section h2 {
+      color: #00509e;
+      margin-bottom: 10px;
+    }
+
+    .facility-section {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .facility-column {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .facility-column ul {
+      list-style: disc;
+      padding-left: 20px;
+    }
+
+    .campus-map {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 1000px;
+      height: auto;
+      display: block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .map-caption {
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+      margin-top: 5px;
+    }
+
+    footer {
+      background-color: #003366;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+
+    /* ダークモード対応 */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #121212;
+        color: #eee;
+      }
+
+      header, footer {
+        background-color: #1e1e1e;
+        color: #ccc;
+      }
+
+      nav {
+        background-color: #2a2a2a;
+      }
+
+      nav a {
+        color: #bbb;
+      }
+
+      nav a:hover {
+        text-decoration: underline;
+        color: #fff;
+      }
+
+      section h2 {
+        color: #a0c4ff;
+      }
+
+      main {
+        /* 背景を暗くしても浮かび上がるように */
+        background-color: #181818;
+      }
+
+      section {
+        background-color: #222;
+        padding: 20px;
+        border-radius: 6px;
+      }
+
+      .facility-column ul {
+        color: #ddd;
+      }
+
+      .campus-map {
+        border-color: #444;
+      }
+
+      .map-caption {
+        color: #999;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>まにあ～る 京都橘大学用</h1>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="test.html">ホーム</a></li>
+      <li><a href="university-info.html">大学情報</a></li>
+      <li><a href="shuttle-bus.html">シャトルバス時刻表</a></li>
+      <li><a href="campus-map.html">校内MAP</a></li>
+      <li><a href="line-notify.html">LINE通知</a></li>
+      <li><a href="contact.html">掲示板</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section>
+      <h2>大学情報</h2>
+      <p>ここに京都橘大学に関する情報を記載します。例：学部一覧、施設案内、学内イベントなど。</p>
+
+      <img src="map_2024.jpg" alt="キャンパスマップ" class="campus-map" />
+      <p class="map-caption">2024年時の校内マップ</p>
+
+      <h3>施設</h3>
+      <div class="facility-section">
+        <div class="facility-column">
+          <ul>
+            <li>1.清和館</li>
+            <li>2.mican（みかん）</li>
+            <li>7.清心館</li>
+            <li>8.清史館</li>
+            <li>9.清風館</li>
+            <li>10.図書館</li>
+            <li>11.中央体育館</li>
+            <li>12.第2体育館</li>
+            <li>13.リバティホール（学生会館）</li>
+            <li>14.クリスタルカフェ</li>
+            <li>15.総合グラウンド</li>
+            <li>16.レッスンホール</li>
+          </ul>
+        </div>
+        <div class="facility-column">
+          <ul>
+            <li>17.クラブハウス</li>
+            <li>18.弓道場</li>
+            <li>19.KYOTO TACHIBANA スタジアム</li>
+            <li>A.清優館</li>
+            <li>B.清香館</li>
+            <li>C.児優館</li>
+            <li>D.明優館</li>
+            <li>E.優心館</li>
+            <li>F.響友館</li>
+            <li>G.啓成館</li>
+            <li>H.アカデミックリンクス</li>
+            <li>I.iCS研究デザインスタジオ</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    京都橘大学生作 まにあ～る
+  </footer>
+
+</body>
+</html>
