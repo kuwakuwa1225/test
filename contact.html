@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>まにあ～る - 掲示板</title>
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background-color: #f4f7f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background-color: #003366;
+      color: #fff;
+      padding: 20px 40px;
+    }
+    header h1 {
+      font-size: 24px;
+    }
+    nav {
+      background-color: #00509e;
+      padding: 10px 40px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      padding: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .bulletin-board {
+      border: 1px solid #ccc;
+      padding: 20px;
+      background-color: #fff;
+    }
+    .bulletin-board h2 {
+      margin-bottom: 20px;
+      color: #00509e;
+      border-bottom: 2px solid #00509e;
+      padding-bottom: 5px;
+    }
+    .new-thread-form,
+    .reply-form {
+      margin-bottom: 20px;
+    }
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      margin-top: 6px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    button {
+      background-color: #00509e;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #003366;
+    }
+    .thread-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    .thread-item {
+      border-bottom: 1px dotted #ccc;
+      padding: 10px 0;
+    }
+    .thread-header {
+      font-weight: bold;
+      font-size: 16px;
+      color: #00509e;
+    }
+    .thread-number {
+      color: #999;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+    .thread-title {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .thread-title:hover {
+      color: #003366;
+    }
+    .message {
+      margin: 8px 0 8px 20px;
+      border-left: 3px solid #00509e;
+      padding-left: 10px;
+      white-space: pre-wrap;
+    }
+    .reply-button {
+      background: none;
+      border: none;
+      color: #00509e;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 20px;
+      text-decoration: underline;
+    }
+    .reply-button:hover {
+      color: #003366;
+    }
+    .reply-form {
+      margin-top: 10px;
+      margin-left: 20px;
+      border-left: 3px solid #ddd;
+      padding-left: 10px;
+    }
+    footer {
+      background-color: #003366;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+    .no-threads {
+      color: #999;
+      font-style: italic;
+      padding: 20px 0;
+      text-align: center;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #121212;
+        color: #eee;
+      }
+      header, footer {
+        background-color: #1e1e1e;
+        color: #ccc;
+      }
+      nav {
+        background-color: #2a2a2a;
+      }
+      nav a {
+        color: #bbb;
+      }
+      nav a:hover {
+        text-decoration: underline;
+        color: #fff;
+      }
+      section.bulletin-board {
+        background-color: #222;
+        border-color: #444;
+        color: #ddd;
+      }
+      section.bulletin-board h2 {
+        color: #a0c4ff;
+        border-bottom-color: #80b3ff;
+      }
+      input[type="text"],
+      textarea {
+        background-color: #333;
+        border: 1px solid #555;
+        color: #eee;
+      }
+      label {
+        color: #ccc;
+      }
+      button {
+        background-color: #3a7bd5;
+        color: white;
+      }
+      button:hover {
+        background-color: #2a5ca8;
+      }
+      .thread-list .thread-item {
+        border-bottom: 1px dotted #555;
+      }
+      .thread-header {
+        color: #80b3ff;
+      }
+      .thread-number {
+        color: #999;
+      }
+      .thread-title:hover {
+        color: #a0c4ff;
+      }
+      .message {
+        border-left-color: #80b3ff;
+        color: #ddd;
+      }
+      .reply-button {
+        color: #80b3ff;
+      }
+      .reply-button:hover {
+        color: #a0c4ff;
+      }
+      .reply-form {
+        border-left-color: #555;
+      }
+      .reply-form textarea {
+        background-color: #333;
+        color: #eee;
+        border: 1px solid #555;
+      }
+      .no-threads {
+        color: #777;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>まにあ～る 京都橘大学用</h1>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">ホーム</a></li>
+      <li><a href="university-info.html">大学情報</a></li>
+      <li><a href="shuttle-bus.html">シャトルバス時刻表</a></li>
+      <li><a href="campus-map.html">校内MAP</a></li>
+      <li><a href="line-notify.html">LINE通知</a></li>
+      <li><a href="contact.html">掲示板</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="bulletin-board">
+      <h2>掲示板</h2>
+      
+      <form id="newThreadForm" class="new-thread-form">
+        <label for="threadTitle">タイトル:</label>
+        <input type="text" id="threadTitle" required placeholder="タイトルを入力してください" maxlength="100" />
+        <label for="threadMessage">メッセージ:</label>
+        <textarea id="threadMessage" required placeholder="メッセージを入力してください" rows="5" maxlength="1000"></textarea>
+        <button type="submit">新規スレッドを作成</button>
+      </form>
+
+      <ul id="threadList" class="thread-list">
+        <li class="no-threads">まだスレッドがありません。</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    京都橘大学生作 まにあ～る
+  </footer>
+
+  <script>
+    let threads = [];
+    let threadCounter = 0;
+
+    const newThreadForm = document.getElementById('newThreadForm');
+    const threadList = document.getElementById('threadList');
+
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
+    function renderThreads() {
+      threadList.innerHTML = '';
+      if (threads.length === 0) {
+        const li = document.createElement('li');
+        li.className = 'no-threads';
+        li.textContent = 'まだスレッドがありません。';
+        threadList.appendChild(li);
+        return;
+      }
+
+      threads.forEach((thread, index) => {
+        const li = document.createElement('li');
+        li.className = 'thread-item';
+
+        const header = document.createElement('div');
+        header.className = 'thread-header';
+
+        const numberSpan = document.createElement('span');
+        numberSpan.className = 'thread-number';
+        numberSpan.textContent = '#' + thread.number;
+
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'thread-title';
+        titleSpan.textContent = escapeHtml(thread.title);
+        titleSpan.style.userSelect = "none";
+        titleSpan.onclick = () => toggleThreadMessages(index);
+
+        header.appendChild(numberSpan);
+        header.appendChild(titleSpan);
+        li.appendChild(header);
+
+        const messagesContainer = document.createElement('div');
+        messagesContainer.style.display = 'none';
+        messagesContainer.className = 'messages-container';
+
+        thread.messages.forEach(msg => {
+          const msgDiv = document.createElement('div');
+          msgDiv.className = 'message';
+          msgDiv.textContent = msg;
+          messagesContainer.appendChild(msgDiv);
+        });
+
+        const replyForm = document.createElement('form');
+        replyForm.className = 'reply-form';
+        replyForm.style.display = 'none';
+
+        const replyTextarea = document.createElement('textarea');
+        replyTextarea.placeholder = '返信を入力してください';
+        replyTextarea.rows = 3;
+        replyTextarea.required = true;
+        replyTextarea.maxLength = 1000;
+
+        const replyBtn = document.createElement('button');
+        replyBtn.type = 'submit';
+        replyBtn.textContent = '返信';
+
+        replyForm.appendChild(replyTextarea);
+        replyForm.appendChild(replyBtn);
+
+        replyForm.onsubmit = function(e) {
+          e.preventDefault();
+          const replyText = replyTextarea.value.trim();
+          if (replyText) {
+            thread.messages.push(replyText);
+            renderThreads();
+            setTimeout(() => {
+              toggleThreadMessages(index, true);
+            }, 0);
+          }
+        };
+
+        li.appendChild(messagesContainer);
+        li.appendChild(replyForm);
+
+        threadList.appendChild(li);
+      });
+    }
+
+    function toggleThreadMessages(index, forceShow = false) {
+      const threadItems = threadList.querySelectorAll('.thread-item');
+      threadItems.forEach((item, i) => {
+        const messages = item.querySelector('.messages-container');
+        const form = item.querySelector('.reply-form');
+        if (i === index) {
+          const shouldShow = forceShow || messages.style.display === 'none';
+          messages.style.display = shouldShow ? 'block' : 'none';
+          form.style.display = shouldShow ? 'block' : 'none';
+        } else {
+          messages.style.display = 'none';
+          form.style.display = 'none';
+        }
+      });
+    }
+
+    newThreadForm.onsubmit = function(e) {
+      e.preventDefault();
+      const title = newThreadForm.threadTitle.value.trim();
+      const message = newThreadForm.threadMessage.value.trim();
+      if (title && message) {
+        threadCounter++;
+        threads.unshift({
+          number: threadCounter,
+          title: title,
+          messages: [message]
+        });
+        renderThreads();
+        newThreadForm.reset();
+      }
+    };
+
+    renderThreads();
+  </script>
+
+</body>
+</html>
