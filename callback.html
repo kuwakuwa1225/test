@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>LINEログイン処理中</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 100px;
+      background-color: #f4f7f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>ログイン処理中...</h1>
+  <p>しばらくお待ちください。</p>
+
+  <script>
+    const code = new URLSearchParams(window.location.search).get('code');
+    const state = new URLSearchParams(window.location.search).get('state');
+
+    if (!code) {
+      document.body.innerHTML = '<h1>エラー</h1><p>認証コードが取得できませんでした。</p>';
+    } else {
+      fetch('https://api.line.me/oauth2/v2.1/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          grant_type: 'authorization_code',
+          code: code,
+          redirect_uri: 'https://kuwakuwa1225.github.io/test/callback.html',
+          client_id: 'YOUR_CHANNEL_ID',        // ← LINEのチャネルIDに置き換える
+          client_secret: 'YOUR_CHANNEL_SECRET' // ← LINEのチャネルシークレットに置き換える
+        })
+      })
+      .then(res => res.json())
+      .then(tokenResponse => {
+        if (tokenResponse.error) {
+          throw new Error(tokenResponse.error_description || 'トークン取得エラー');
+        }
+
+        const accessToken = tokenResponse.access_token;
+
+        // プロフィール情報の取得
+        return fetch('https://api.line.me/v2/profile', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+      })
+      .then(res => res.json())
+      .then(profile => {
+        const userId = profile.userId;
+        localStorage.setItem('line_user_id', userId);
+        window.location.href = 'index.html';
+      })
+      .catch(error => {
+        console.error(error);
+        document.body.innerHTML = '<h1>ログインエラー</h1><p>' + error.message + '</p>';
+      });
+    }
+  </script>
+</body>
+</html>
