@@ -330,11 +330,11 @@
   const user_id = localStorage.getItem("line_user_id");
   if (!user_id) {
     alert("LINEログインしていません。ログインページへ移動します。");
-    window.location.href = "line_login.html"; // ログインページへ強制リダイレクト
+    window.location.href = "line_login.html";
   }
+
   const supabaseUrl = 'https://mtmlxanzhctzufhraxhy.supabase.co';
-  const supabaseKey =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10bWx4YW56aGN0enVmaHJheGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3MDIzNzEsImV4cCI6MjA2NTI3ODM3MX0.t2wfk9LwDFK1tuO9MrVhvFvi6frzgyor2FzMalEpsZo';
+  const supabaseKey = '...'; // あなたのキー
   const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
   const periodTimeMap = {
@@ -345,7 +345,6 @@
     5: '17:10-18:50',
   };
 
-  // データ挿入（送信・保存共通）
   async function insertTimetableData() {
     const inputs = document.querySelectorAll('.subject-input');
     let successCount = 0;
@@ -358,7 +357,9 @@
       const day_of_week = input.dataset.day;
       const period = parseInt(input.dataset.period);
       const time = periodTimeMap[period] || '';
-      const roomInput = document.querySelector(input.classroom-input[data-day="${day_of_week}"][data-period="${period}"]);
+
+      // 🔴 修正：セレクタの文法エラー修正
+      const roomInput = document.querySelector(`.classroom-input[data-day="${day_of_week}"][data-period="${period}"]`);
       const room = roomInput ? roomInput.value.trim() : '';
 
       const { error } = await supabase.from('subjects').insert({
@@ -380,7 +381,6 @@
     return { successCount, failCount };
   }
 
-  // 保存ボタン：既存データ削除→新規登録
   async function overwriteTimetable() {
     const { error: deleteError } = await supabase
       .from('subjects')
@@ -394,14 +394,12 @@
     }
 
     const { successCount, failCount } = await insertTimetableData();
-
-    alert(保存完了\n成功: ${successCount}件\n失敗: ${failCount}件);
+    alert(`保存完了\n成功: ${successCount}件\n失敗: ${failCount}件`);
   }
 
-  // 送信ボタン：そのまま追加送信
   async function sendTimetableToSupabase() {
     const { successCount, failCount } = await insertTimetableData();
-    alert(送信完了\n成功: ${successCount}件\n失敗: ${failCount}件);
+    alert(`送信完了\n成功: ${successCount}件\n失敗: ${failCount}件`);
   }
 
   window.addEventListener('DOMContentLoaded', () => {
