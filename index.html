@@ -326,6 +326,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  const user_id = localStorage.getItem("line_user_id");
+  if (!user_id) {
+    alert("LINEログインしていません。ログインページへ移動します。");
+    window.location.href = "line_login.html"; // ログインページへ強制リダイレクト
+  }
   const supabaseUrl = 'https://mtmlxanzhctzufhraxhy.supabase.co';
   const supabaseKey =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10bWx4YW56aGN0enVmaHJheGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk3MDIzNzEsImV4cCI6MjA2NTI3ODM3MX0.t2wfk9LwDFK1tuO9MrVhvFvi6frzgyor2FzMalEpsZo';
