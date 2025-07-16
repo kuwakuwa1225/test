@@ -406,6 +406,29 @@
     document.getElementById('sendBtn').addEventListener('click', sendTimetableToSupabase);
     document.getElementById('saveBtn').addEventListener('click', overwriteTimetable);
   });
+async function loadTimetableFromSupabase() {
+  const { data, error } = await supabase
+    .from('subjects')
+    .select('*')
+    .eq('user_id', user_id);
+
+  if (error) {
+    console.error("時間割の取得に失敗:", error);
+    return;
+  }
+
+  data.forEach(entry => {
+    const { day_of_week, time, name, classroom } = entry;
+    const period = Object.keys(periodTimeMap).find(key => periodTimeMap[key] === time);
+    if (!period) return;
+
+    const nameInput = document.querySelector(`.subject-input[data-day="${day_of_week}"][data-period="${period}"]`);
+    const roomInput = document.querySelector(`.classroom-input[data-day="${day_of_week}"][data-period="${period}"]`);
+
+    if (nameInput) nameInput.value = name;
+    if (roomInput) roomInput.value = classroom;
+  });
+}
 </script>
 </body>
 </html>
