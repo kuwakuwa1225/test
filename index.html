@@ -405,7 +405,9 @@
   window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('sendBtn').addEventListener('click', sendTimetableToSupabase);
     document.getElementById('saveBtn').addEventListener('click', overwriteTimetable);
+    loadTimetableFromSupabase(); // ← 追加
   });
+
 async function loadTimetableFromSupabase() {
   const { data, error } = await supabase
     .from('subjects')
