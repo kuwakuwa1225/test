@@ -429,6 +429,44 @@ async function loadTimetableFromSupabase() {
 
     if (nameInput) nameInput.value = name;
     if (roomInput) roomInput.value = classroom;
+      document.addEventListener("DOMContentLoaded", async () => {
+    const userId = localStorage.getItem("line_user_id");
+    if (userId) {
+      await loadTimetable(userId);
+    } else {
+      console.log("line_user_id が見つかりません。ログインが必要です。");
+    }
+  });
+
+  async function loadTimetable(userId) {
+    const { data, error } = await supabase
+      .from("timetable")
+      .select("*")
+      .eq("user_id", userId);  // ← ここを修正！
+
+    if (error) {
+      console.error("時間割の読み込み失敗", error);
+      return;
+    }
+
+    renderTimetable(data);
+  }
+
+  function renderTimetable(subjects) {
+    const tbody = document.getElementById("timetable-body");
+    tbody.innerHTML = "";
+
+    subjects.forEach((subject) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${subject.subject}</td>
+        <td>${subject.day}</td>
+        <td>${subject.time}</td>
+        <td>${subject.room}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
   });
 }
 </script>
